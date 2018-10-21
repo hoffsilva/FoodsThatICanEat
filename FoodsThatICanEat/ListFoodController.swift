@@ -8,13 +8,17 @@
 
 import Foundation
 
-protocol ListFoodDelegate {
+protocol ListFoodDelegate: class {
     func filteredFood()
 }
 
-struct ListFoodController {
+class ListFoodController {
     
-    let arrayOfFoods = [
+    weak var listFoodDelegate: ListFoodDelegate?
+    
+    var arrayOfFoods = [Food]()
+    
+    let dataArrayOfFoods = [
         
         Food(dinners: [""], family: "Peixes e mariscos", foodName: "Badejo", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Peixes e mariscos", foodName: "Amêijoa", restrictionLevel: .VERDE),
@@ -49,7 +53,7 @@ struct ListFoodController {
         Food(dinners: [""], family: "Peixes e mariscos", foodName: "Tamboril (Lophius)", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Peixes e mariscos", foodName: "Rodabalho/Pregado", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Peixes e mariscos", foodName: "Salmão", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Peixes e mariscos", foodName: "Sardinha", restrictionLevel: .AMARELO),
+        Food(dinners: ["Frita", "   sardinhas escabeche", "   diversos pratos à base de sardinha", "   conservas de sardinha."], family: "Peixes e mariscos", foodName: "Sardinha", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Peixes e mariscos", foodName: "Sépia/Siba", restrictionLevel: .VERDE),
         
         Food(dinners: [""], family: "Carnes", foodName: "Avestruz", restrictionLevel: .VERDE),
@@ -71,32 +75,32 @@ struct ListFoodController {
         Food(dinners: [""], family: "Legumes", foodName: "Grão-de-bico", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Legumes", foodName: "Ervilhas", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Legumes", foodName: "Fava (Vicia faba)", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Legumes", foodName: "Feijão branco", restrictionLevel: .VERMELHO),
+        Food(dinners: ["Cassoulet", "   refogados e salada."], family: "Legumes", foodName: "Feijão branco", restrictionLevel: .VERMELHO),
         Food(dinners: [""], family: "Legumes", foodName: "Feijão Vermelho", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Legumes", foodName: "Lentilhas", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Legumes", foodName: "Soja", restrictionLevel: .AMARELO),
+        Food(dinners: ["Óleos de soja e mistura", "   substitutos da manteiga. Alguns molhos", "   diversos temperos de saladas", "   molhos orientais. Biscoitos", "   pão doce", "   cereais", "   diversos pastéis", "   bombons", "   bombons com nozes", "   diversas bolachas crocantes", "   bolachas de sal", "   farinha de soja", "   pão (alguns)", "   tortas. Caramelo", "   caramelos de nozes. Comida para bebês", "   comida chinesa. Conservas", "   embutidos", "   salsichas de porco. Bebidas de soja", "   substituto do café", "   leite de soja", "   lecitina", "   margarina", "   sorvetes. Macarrão", "   espaguetes e sopas de soja. Queijo tofu", "   nata e misso", "   refresco de limonada em pó."], family: "Legumes", foodName: "Soja", restrictionLevel: .AMARELO),
         
         Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Alfa-Lactoalbumina", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Beta-Lactoglobulina", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Caseína", restrictionLevel: .LARANJA),
-        Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Clara de ovo", restrictionLevel: .LARANJA),
+        Food(dinners: ["Leites frescos", "   lactose", "   leite em pó", "   leite condensado", "   coalhada", "   creme de leite", "   nata líquida", "   queijos de vaca (duros e moles)", "   cremes e iogurtes de leite de vaca", "   vitamina", "   chocolate quente", "   sorvete. Molhos: maionese", "   de queijo", "   bechamel", "   condimentos para saladas", "   sopas."], family: "Produtos lácteos e ovo", foodName: "Caseína", restrictionLevel: .LARANJA),
+        Food(dinners: ["Albumina", "   ingredientes para saladas", "   biscoitos", "   bolo", "   croquetes", "   risoles", "   pudins", "   balas", "   doces cristalizados", "   creme de confeiteiro", "   massa folhada", "   tortas", "   crepes", "   alguns pães", "   clara de ovo em pó. Chocolate de malte", "   consomé", "   creme de leite. Caldos", "   alguns pratos de carne", "   empadas", "   empanados", "   algumas massas feitas com ovo", "   salsichas. Saladas", "   quiche", "   omeletes", "   bolachas", "   gelatina para a fabricação de carne em conserva", "   glaceados", "   merengues", "   maionese", "   suflês. Frutos secos caramelizados. Ovos: assados", "   cozidos", "   ovo pochê. Algumas bebidas geladas. Alguns laxantes."], family: "Produtos lácteos e ovo", foodName: "Clara de ovo", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de búfalo", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de cabra", restrictionLevel: .AMARELO),
-        Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de ovelha", restrictionLevel: .LARANJA),
-        Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de vaca", restrictionLevel: .VERMELHO),
+        Food(dinners: ["Queijos e iogurtes à base de leite de cabra."], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de cabra", restrictionLevel: .AMARELO),
+        Food(dinners: ["Leites e queijos de ovelha."], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de ovelha", restrictionLevel: .LARANJA),
+        Food(dinners: ["Ingredientes para saladas", "   lactose", "   queijos", "   requeijão", "   iogurtes. Alimentos cremosos", "   alimentos gratinados", "   bechamel", "   mexidos e empanados. Vitaminas", "   bebidas de cacau", "   bebidas de coco", "   biscoitos", "   tortas", "   bombons. Alguns bolinhos", "   chocolate", "   creme pasteleiro", "   cremes", "   crepes", "   donuts. Queijadas", "   doce de leite", "   pudins", "   bolachas", "   bolachas de soja", "wafers", "   sorvetes. Ovos mexidos", "   omeletes (se adicionar leite). Leite condensado", "   leite em pó", "   leite maltado", "   manteiga. Natas", "   creme de leite", "   algumas margarinas", "   bebidas geladas", "   suflés", "   tartes. Misturas de farinhas", "   pão de forma", "   pão. Patês", "   salame", "   salsichas cozidas", "   purê de batata", "   sopas. Molhos (com leite ou manteiga)."], family: "Produtos lácteos e ovo", foodName: "Leite/Queijo de vaca", restrictionLevel: .VERMELHO),
         Food(dinners: [""], family: "Produtos lácteos e ovo", foodName: "Gema de ovo", restrictionLevel: .VERDE),
         
-        Food(dinners: [""], family: "Outros", foodName: "Agar Agar", restrictionLevel: .LARANJA),
+        Food(dinners: ["Sorvetes", "   sobremesas dietéticas", "   gelatinas", "   doces e produtos de panificação."], family: "Outros", foodName: "Agar Agar", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Outros", foodName: "Alga Espaguetti", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Outros", foodName: "Alga espirulina", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Outros", foodName: "Aloe vera", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Outros", foodName: "Café", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Outros", foodName: "Canela", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Outros", foodName: "Levedura de cerveja", restrictionLevel: .LARANJA),
+        Food(dinners: ["Cerveja", "   pratos preparados à base de cerveja", "   cápsulas ou granulados. Em alimentos processados pode ser usado como conservante e agente espessante. Molhos", "   refeições para crianças", "   massas", "   etc. Encontrado em produtos que contenham amido ou água e gordura como em carnes moidas."], family: "Outros", foodName: "Levedura de cerveja", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Outros", foodName: "Levedura de pão", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Outros", foodName: "Lúpulo", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Outros", foodName: "Mel", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Outros", foodName: "Cola/Noz de cola", restrictionLevel: .LARANJA),
+        Food(dinners: ["Bebidas com cola", "   balas de cola."], family: "Outros", foodName: "Cola/Noz de cola", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Outros", foodName: "Ruibarbo", restrictionLevel: .VERDE),
         
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Acelga", restrictionLevel: .VERDE),
@@ -107,9 +111,9 @@ struct ListFoodController {
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Agrião", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Brócolis", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Abobrinha", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Abóbora", restrictionLevel: .AMARELO),
+        Food(dinners: ["Cozidos", "   sopas", "   cremes", "   sobremesa a base de abóbora."], family: "Verduras e hortaliças", foodName: "Abóbora", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Cebola", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Cogumelos", restrictionLevel: .LARANJA),
+        Food(dinners: ["Refogados", "   sopas desidratadas", "   guarnições."], family: "Verduras e hortaliças", foodName: "Cogumelos", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Repolho Roxo", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Couve-de-Bruxelas", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Couve-flor", restrictionLevel: .VERDE),
@@ -126,7 +130,7 @@ struct ListFoodController {
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Alho-poró", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Rabanete", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Beterraba", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Repolho", restrictionLevel: .AMARELO),
+        Food(dinners: ["Saladas", "   cozidos", "   chucrute."], family: "Verduras e hortaliças", foodName: "Repolho", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Rúcula", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Tomate", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Verduras e hortaliças", foodName: "Cenoura", restrictionLevel: .VERDE),
@@ -153,7 +157,7 @@ struct ListFoodController {
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Funcho", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Louro", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Camomila", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Ervas e especiarias", foodName: "Mostarda", restrictionLevel: .AMARELO),
+        Food(dinners: ["Curry", "   grãos de mostarda", "   alguns molhos preparados para saladas e carnes", "   alguns sanduíches."], family: "Ervas e especiarias", foodName: "Mostarda", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Noz moscada", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Orégano", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Salsinha", restrictionLevel: .VERDE),
@@ -167,41 +171,41 @@ struct ListFoodController {
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Tomilho", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Ervas e especiarias", foodName: "Baunilha", restrictionLevel: .VERDE),
         
-        Food(dinners: [""], family: "Frutos secos", foodName: "Amêndoa", restrictionLevel: .LARANJA),
-        Food(dinners: [""], family: "Frutos secos", foodName: "Castanha de Caju", restrictionLevel: .VERMELHO),
-        Food(dinners: [""], family: "Frutos secos", foodName: "Avelã", restrictionLevel: .LARANJA),
-        Food(dinners: [""], family: "Frutos secos", foodName: "Amendoim", restrictionLevel: .LARANJA),
+        Food(dinners: ["Confeitaria", "   chocolates", "   sorvetes", "   leite de amêndoa", "   marzipã", "   torrone."], family: "Frutos secos", foodName: "Amêndoa", restrictionLevel: .LARANJA),
+        Food(dinners: ["Consumido como aperitivo (torradas e salgadas)", "   em confeitaria", "   chocolates e torrones."], family: "Frutos secos", foodName: "Castanha de Caju", restrictionLevel: .VERMELHO),
+        Food(dinners: ["Podem ser encontradas em fruto seco", "   bolachas e bombons de avelã."], family: "Frutos secos", foodName: "Avelã", restrictionLevel: .LARANJA),
+        Food(dinners: ["Frutos secos", "   alguns chocolates", "   manteiga de amendoim."], family: "Frutos secos", foodName: "Amendoim", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Frutos secos", foodName: "Castanha Portuguesa", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutos secos", foodName: "Noz", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Frutos secos", foodName: "Castanha do Para", restrictionLevel: .VERMELHO),
+        Food(dinners: ["Consumidas cruas", "   em saladas ou torradas", "   com ou sem casca", "   em sorvetes", "   chocolates", "   produtos de panificação e confeitaria."], family: "Frutos secos", foodName: "Castanha do Para", restrictionLevel: .VERMELHO),
         Food(dinners: [""], family: "Frutos secos", foodName: "Macadâmia", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutos secos", foodName: "Uva-Passa", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutos secos", foodName: "Pinhão", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutos secos", foodName: "Pistache", restrictionLevel: .AMARELO),
         
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Amaranto (Amarantus)", restrictionLevel: .AMARELO),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Arroz", restrictionLevel: .VERMELHO),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Aveia", restrictionLevel: .LARANJA),
+        Food(dinners: ["As folhas desta planta são muito parecidas às dos espinafres. É bastante utilizada em receitas culinárias da Ásia", "   América e África. As sementes podem ser consumidas cruas ou cozidas", "   podem ser utilizadas como um substituto do cereal. Se levadas ao forno podem ser consumidas como a pipoca. O pigmento vermelho obtido da planta é utilizado como um corante para alimentos e medicamentos (E123)."], family: "Cereais e grãos", foodName: "Amaranto (Amarantus)", restrictionLevel: .AMARELO),
+        Food(dinners: ["Comida chinesa e coreana", "   paelhas", "   cereais para o café da manhã", "   farinha de arroz", "   massa de arroz", "   creme de arroz", "   molhos feitos com farinha de arroz."], family: "Cereais e grãos", foodName: "Arroz", restrictionLevel: .VERMELHO),
+        Food(dinners: ["Farinha de aveia", "   alguns cereais", "   alguns produtos de panificação."], family: "Cereais e grãos", foodName: "Aveia", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Cacau", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Açúcar (de cana)", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Cevada (Hordeum vulgare)", restrictionLevel: .VERMELHO),
+        Food(dinners: ["Algumas granolas", "   variedade de frutos secos", "   confeitaria", "   alguns torrões."], family: "Cereais e grãos", foodName: "Cevada (Hordeum vulgare)", restrictionLevel: .VERMELHO),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Centeio (Secale cereale)", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Cuscuz", restrictionLevel: .AMARELO),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Espelta (Triticum espelta)", restrictionLevel: .LARANJA),
+        Food(dinners: ["Também chamado cuzcuz", "   alcuzcuz etc. Presente na pasta de farinha de sêmola de grão duro", "   (às vezes de trigo verde ou cevada). Normalmente é cozido com vapor de água quente ou caldos de carne", "   legumes ou peixe", "   acompanha cozidos feitos de diferentes maneiras. Contém glúten."], family: "Cereais e grãos", foodName: "Cuscuz", restrictionLevel: .AMARELO),
+        Food(dinners: ["O Triticum espelta também conhecido como espelta", "   é uma espécie comum do cereal triticum (trigo). Podem ser encontrado sob a forma de grão", "   farinha", "   sêmola", "   cuscuz", "   biscoitos", "   doces", "   bolachas", "   patês", "   cerveja", "   pasta italiana e tortilhas."], family: "Cereais e grãos", foodName: "Espelta (Triticum espelta)", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Glúten", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Milho/Óleo de milho (Zea mays)", restrictionLevel: .LARANJA),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Malte", restrictionLevel: .AMARELO),
+        Food(dinners: ["É um dos primeiros cereais que as crianças podem consumir. Não contem glúten. Os grãos podem ser utilizados para preparar pipocas. São encontrados em alguns cereais de café da manhã como os corn-flakes. A farinha é utilizada para espessar sopas", "   molhos", "   e também são empregados na elaboração de confeitaria. Alguns queijos", "   manteiga de amendoim", "   mistura de gorduras para frituras", "   óleo", "   margarina. Calda de açúcar em pó", "   arroz cremoso", "   açúcares", "   alguns doces", "   biscoitos", "   crepes", "   donuts", "   produtos com glicose", "   goma de mascar", "   pão", "   pastéis", "   tortas", "   empanados", "   massas ou cremes", "   pudins", "   fécula. Vitaminas", "   bebidas carbonadas", "   cervejas", "   burbon e outros uísques", "   cervejas", "   vinagre destilado", "   café instantâneo", "   chás instantâneos", "   baunilha. Carnes", "   salsichas", "   presuntos (curados / fiambres). Gelatinas (sobremesas e cápsulas)", "   glaceados", "   sorvetes", "   sucos de frutas. Farinha", "   óleo", "   e açúcar de milho. Molho ketchup", "   alguns molhos e maioneses", "   molhos para carnes", "   aditivos de saladas", "   tacos mexicanos."], family: "Cereais e grãos", foodName: "Milho/Óleo de milho (Zea mays)", restrictionLevel: .LARANJA),
+        Food(dinners: ["Algumas misturas de farinhas", "   flocos de cevada", "   malte", "   cerveja."], family: "Cereais e grãos", foodName: "Malte", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Milhete/Painço (Panicum miliaceum)", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Polenta (Polenta giallia)", restrictionLevel: .AMARELO),
+        Food(dinners: ["Atualmente existem três variedades de polentas: polenta gialla (polenta amarela) realizada com farinha de milho amarelo", "   polenta branca (polenta branca) à base de farinha de castanha e as polentas escuras a partir de trigo-sarraceno. Destas três a mais difundida é a primeira", "   ou seja", "   a polenta de farinha de milho sendo ela a analisada."], family: "Cereais e grãos", foodName: "Polenta (Polenta giallia)", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Quinua (Chenopodium quinoa)", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Casca de trigo", restrictionLevel: .LARANJA),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Girassol/Óleo de girassol", restrictionLevel: .LARANJA),
+        Food(dinners: ["Alimentos para bebês. Carnes e derivados: carne empanada", "   carnes enlatadas", "   cubos para caldo (concentrados de carne)", "   hambúrgueres", "   presunto de york", "   mortadela", "   salsichas. Cereais: crispies de arroz", "   trigo tufado", "   granola", "   achocolatado e similares", "   crackers", "   crepes", "   bombons", "   bolachas", "   donuts. Gérmen de trigo", "   produtos de malte", "   uísques", "   cervejas. Farinhas e pães: de trigo integral", "   de milho", "   de trigo-sarraceno", "   de arroz. Sorvetes (casquinha", "   bolacha)", "   folhados pudins", "   flans preparados", "   tartes", "   tortas", "   farinha de rosca", "   pão de centeio integral", "   pão de milho", "   pão de soja", "   pães com glúten. Pastas italianas (todas). Produtos diversos de pastelaria e outros doces: barquilhos", "   biscoitos", "   pastelaria."], family: "Cereais e grãos", foodName: "Casca de trigo", restrictionLevel: .LARANJA),
+        Food(dinners: ["Comida chinesa", "   sementes de girassol", "   vinho manzanilla", "   mistura de frutos secos."], family: "Cereais e grãos", foodName: "Girassol/Óleo de girassol", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Linhaça (Linum usitatissimum)", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Sêmola de trigo duro (Triticum durum)", restrictionLevel: .LARANJA),
+        Food(dinners: ["Massa", "   sopas e espessante. Contem glúten."], family: "Cereais e grãos", foodName: "Sêmola de trigo duro (Triticum durum)", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Gergelim (Sesamum indicum)", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Mandioca (Manihot esculenta)", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Transglutaminase", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Cereais e grãos", foodName: "Trigo (Triticum aestivum)", restrictionLevel: .LARANJA),
+        Food(dinners: ["Alimentos para bebês. Carnes e derivados: carne empanada", "   carnes enlatadas", "   cubos para caldo (concentrados de carne)", "   hambúrgueres", "   presuntos de York", "   mortadelas", "   salsichas. Cereais para o café da manhã", "   crispies de arroz", "   granola", "   achocolatados", "   crackers", "   crepes", "   bombons", "   bolachas", "   donuts. Gérmen de trigo", "   produtos de malte", "   uísques", "   cervejas. Farinhas e pães: de trigo integral", "   de milho", "   de trigo-sarraceno", "   de arroz. Sorvetes (casquinha", "   bolacha)", "   folhados", "   pudins", "   flans preparados", "   tartes", "   tortas", "   farinha de rosca", "   pão de centeio integral", "   pão de milho", "   pão de soja", "   pães com glúten. Massas italianas (todas). Produtos diversos de confeitaria e outros doces. Recomenda-se verificar a etiqueta."], family: "Cereais e grãos", foodName: "Trigo (Triticum aestivum)", restrictionLevel: .LARANJA),
         Food(dinners: [""], family: "Cereais e grãos", foodName: "Trigo-sarraceno (F. esculentum)", restrictionLevel: .VERDE),
         
         Food(dinners: [""], family: "Frutas", foodName: "Abacate", restrictionLevel: .VERDE),
@@ -231,7 +235,7 @@ struct ListFoodController {
         Food(dinners: [""], family: "Frutas", foodName: "Pêssego", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutas", foodName: "Melão", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutas", foodName: "Amora", restrictionLevel: .VERDE),
-        Food(dinners: [""], family: "Frutas", foodName: "Laranja", restrictionLevel: .AMARELO),
+        Food(dinners: ["Sucos e néctares de laranja. Alguns chás de frutas", "bolachas ou tortas que contenham raspa de laranja. Compotas" , " licores e refrescos gelados feitos à base destas frutas."], family: "Frutas", foodName: "Laranja", restrictionLevel: .AMARELO),
         Food(dinners: [""], family: "Frutas", foodName: "Nectarina", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutas", foodName: "Oliva/Azeite de Oliva", restrictionLevel: .VERDE),
         Food(dinners: [""], family: "Frutas", foodName: "Papaia", restrictionLevel: .VERDE),
@@ -244,6 +248,21 @@ struct ListFoodController {
         Food(dinners: [""], family: "Frutas", foodName: "Amora Negra", restrictionLevel: .VERDE)
         
     ]
+    
+    func getFoodBy(parameter: String) {
+        for food in dataArrayOfFoods {
+            if food.foodName.contains(parameter) {
+                arrayOfFoods.append(food)
+            } else {
+                for dinner in food.dinners {
+                    if dinner.contains(parameter) {
+                        arrayOfFoods.append(food)
+                    }
+                }
+            }
+        }
+        self.listFoodDelegate?.filteredFood()
+    }
     
 }
 
