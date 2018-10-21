@@ -12,6 +12,9 @@
 		0B374D15217C19A00076C446 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B374D13217C19A00076C446 /* Main.storyboard */; };
 		0B374D17217C19A10076C446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B374D16217C19A10076C446 /* Assets.xcassets */; };
 		0B374D1A217C19A10076C446 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B374D18217C19A10076C446 /* LaunchScreen.storyboard */; };
+		0B374D22217C1A630076C446 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B374D21217C1A630076C446 /* Food.swift */; };
+		0B374D24217C1B120076C446 /* RestrictionLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B374D23217C1B120076C446 /* RestrictionLevel.swift */; };
+		0B374D26217C1C5D0076C446 /* ListFoodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B374D25217C1C5D0076C446 /* ListFoodController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		0B374D16217C19A10076C446 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B374D19217C19A10076C446 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0B374D1B217C19A10076C446 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B374D21217C1A630076C446 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		0B374D23217C1B120076C446 /* RestrictionLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionLevel.swift; sourceTree = "<group>"; };
+		0B374D25217C1C5D0076C446 /* ListFoodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFoodController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,9 @@
 				0B374D16217C19A10076C446 /* Assets.xcassets */,
 				0B374D18217C19A10076C446 /* LaunchScreen.storyboard */,
 				0B374D1B217C19A10076C446 /* Info.plist */,
+				0B374D21217C1A630076C446 /* Food.swift */,
+				0B374D23217C1B120076C446 /* RestrictionLevel.swift */,
+				0B374D25217C1C5D0076C446 /* ListFoodController.swift */,
 			);
 			path = FoodsThatICanEat;
 			sourceTree = "<group>";
@@ -137,6 +146,9 @@
 			files = (
 				0B374D12217C19A00076C446 /* ViewController.swift in Sources */,
 				0B374D10217C19A00076C446 /* AppDelegate.swift in Sources */,
+				0B374D22217C1A630076C446 /* Food.swift in Sources */,
+				0B374D24217C1B120076C446 /* RestrictionLevel.swift in Sources */,
+				0B374D26217C1C5D0076C446 /* ListFoodController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
