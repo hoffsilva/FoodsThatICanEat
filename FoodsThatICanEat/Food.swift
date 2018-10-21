@@ -11,9 +11,11 @@ import Foundation
 class Food {
     var family: String!
     var foodName: String!
-    var restrictionLevel: RestrictionLevel
+    var restrictionLevel: RestrictionLevel!
+    var dinners: [String]!
     
-    init(family: String, foodName: String, restrictionLevel: RestrictionLevel) {
+    init(dinners: [String], family: String, foodName: String, restrictionLevel: RestrictionLevel) {
+        self.dinners = dinners
         self.family = family
         self.foodName = foodName
         self.restrictionLevel = restrictionLevel
